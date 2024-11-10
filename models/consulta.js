@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
+const Status = require("./status");
 
 const Consulta = sequelize.define("Consulta", {
   id_consulta: {
@@ -32,6 +33,17 @@ const Consulta = sequelize.define("Consulta", {
     allowNull: true,
     unique: true,
   },
+  id_status: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: Status,
+      key: "id_status",
+    },
+    allowNull: false,
+  },
 });
+
+Consulta.belongsTo(Status, { foreignKey: "id_status" });
+Status.hasMany(Consulta, { foreignKey: "id_status" });
 
 module.exports = Consulta;

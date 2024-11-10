@@ -10,6 +10,7 @@ Este é um sistema de agendamento de consultas médicas desenvolvido com Node.js
 - **Atualizar dados de uma consulta**
 - **Deletar uma consulta**
 - **Atualizar a prescrição de uma consulta**
+- **Atualizar o status e prescrição de uma consulta**
 
 ## Tecnologias Utilizadas
 
@@ -32,8 +33,7 @@ Cria uma nova consulta.
   "horario_atendimento": "10:00",
   "horario_encerramento": "10:45",
   "id_paciente": 1,
-  "id_medico": 1,
-  "id_prescricao": "12345"
+  "id_medico": 1
 }
 ```
 
@@ -76,6 +76,40 @@ Atualiza a prescrição de uma consulta.
 {
   "id_prescricao": "12345"
 }
+```
+
+### 7. `PATCH /consultas/:id/status`
+
+Atualiza o status e a prescrição de uma consulta.
+
+**Corpo da requisição**:
+
+```json
+{
+  "id_status": 2,
+  "id_prescricao": "54321"
+}
+```
+
+### 8. `GET /fila`
+
+Lista as consultas por ordem de chamada, incluindo a posição e horário da consulta.
+
+**Resposta**:
+
+```json
+[
+  {
+    "id_consulta": 1,
+    "lugar_fila": 1,
+    "horario_atendimento": "10:00"
+  },
+  {
+    "id_consulta": 2,
+    "lugar_fila": 2,
+    "horario_atendimento": "10:30"
+  }
+]
 ```
 
 ## Como Rodar a Aplicação
