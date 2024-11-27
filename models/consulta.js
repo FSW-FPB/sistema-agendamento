@@ -20,6 +20,10 @@ const Consulta = sequelize.define("Consulta", {
     type: DataTypes.TIME,
     allowNull: false,
   },
+  motivo: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
   id_paciente: {
     type: DataTypes.INTEGER,
     allowNull: false,
