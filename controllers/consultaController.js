@@ -163,6 +163,72 @@ const listarConsultasPorOrdemDeChamada = async (req, res) => {
   }
 };
 
+const listarConsultasPorIdPaciente = async (req, res) => {
+  try {
+    const { id_paciente } = req.params;
+    const { id_status } = req.query; // Captura o status como query param opcional
+
+    const whereConditions = { id_paciente };
+
+    // Adiciona o filtro de status, se fornecido
+    if (id_status) {
+      whereConditions.id_status = id_status;
+    }
+
+    const consultas = await Consulta.findAll({
+      where: whereConditions,
+      include: [{ model: Status, attributes: ["descricao"] }],
+      order: [
+        ["data_consulta", "ASC"],
+        ["horario_atendimento", "ASC"],
+      ],
+    });
+
+    if (!consultas.length) {
+      return res.status(404).json({
+        message: "Nenhuma consulta encontrada para o paciente especificado",
+      });
+    }
+
+    return res.status(200).json(consultas);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Erro ao listar consultas por ID do paciente",
+      error,
+    });
+  }
+};
+
+const listarConsultasPorIdMedico = async (req, res) => {
+  try {
+    const { id_medico } = req.params;
+
+    const consultas = await Consulta.findAll({
+      where: { id_medico },
+      include: [{ model: Status, attributes: ["descricao"] }],
+      order: [
+        ["data_consulta", "ASC"],
+        ["horario_atendimento", "ASC"],
+      ],
+    });
+
+    if (!consultas.length) {
+      return res.status(404).json({
+        message: "Nenhuma consulta encontrada para o médico especificado",
+      });
+    }
+
+    return res.status(200).json(consultas);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Erro ao listar consultas por idMedico",
+      error,
+    });
+  }
+};
+
 const atualizarStatusConsulta = async (req, res) => {
   try {
     const consulta = await Consulta.findByPk(req.params.id);
@@ -209,4 +275,6 @@ module.exports = {
   atualizarPrescricao,
   listarConsultasPorOrdemDeChamada,
   atualizarStatusConsulta,
+  listarConsultasPorIdMedico,
+  listarConsultasPorIdPaciente,
 };
