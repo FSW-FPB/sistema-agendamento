@@ -12,6 +12,7 @@ const criarConsulta = async (req, res) => {
       id_medico,
       id_prescricao,
       id_status,
+      motivo,
     } = req.body;
 
     const novaConsulta = await Consulta.create({
@@ -22,6 +23,7 @@ const criarConsulta = async (req, res) => {
       id_medico,
       id_prescricao: id_prescricao || null,
       id_status: id_status || 1,
+      motivo,
     });
 
     return res.status(201).json(novaConsulta);
